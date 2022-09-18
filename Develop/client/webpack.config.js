@@ -8,66 +8,67 @@ const { InjectManifest } = require('workbox-webpack-plugin');
 
 module.exports = () => {
   return {
-    mode: 'development',
+    mode: 'production',
     entry: {
       main: './src/js/index.js',
-      install: './src/js/install.js'
+      install: './src/js/install.js',
     },
     output: {
       filename: '[name].bundle.js',
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
+      new InjectManifest({
+        swSrc: './src-sw.js',
+        swDest: './service-worker.js',
+      }),
       new HtmlWebpackPlugin({
         template: './index.html',
         title: 'Webpack Plugin',
         favicon: './favicon.ico',
       }),
       new WebpackPwaManifest({
-          name: 'Just Another Text Editor',
-          short_name: 'JATE',
-          description: 'A text editor',
-          background_color: '#7eb4e2',
-          theme_color: '#7eb4e2',
-          start_url: './',
-          publicPath: './',
-          icons: [
-            {
-              src: path.resolve('src/images/logo.png'),
-              sizes: [96, 128, 192, 256, 384, 512],
-              destination: path.join('assets', 'icons'),
-            },
-            {
-              src: path.resolve('src/images/logo.png'),
-              size: '1024x1024',
-              destination: path.join('assets', 'icons'),
-              purpose: 'maskable'
-            }
-          ],
-        }), 
-        new InjectManifest({
-          swSrc: './sw.js',
-          swDest: 'service-worker.js',
-        }), 
+        name: 'Just Another Text Editor',
+        short_name: 'J.A.T.E.',
+        description: 'Takes notes with JavaScript highlighting',
+        background_color: '#7eb4e2',
+        theme_color: '#7eb4e2',
+        start_url: './',
+        publicPath: './',
+        fingerprints: false,
+        icons: [
+          {
+            src: path.resolve('src/images/logo.png'),
+            sizes: [96, 128, 192, 256, 384, 512],
+            destination: path.join('assets', 'icons'),
+          },
+          {
+            src: path.resolve('src/images/logo.png'),
+            size: '1024x1024',
+            destination: path.join('assets', 'icons'),
+            purpose: 'maskable',
+          },
+        ],
+      }),
     ],
 
     module: {
       rules: [
         {
-          test: /\.css$/i,
-          use: ['style-loader', 'css-loader'],
-        },
-        {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,
           type: 'asset/resource',
         },
         {
+          test: /\.css$/i,
+          use: ['style-loader', 'css-loader'],
+        },
+        {
           test: /\.m?js$/,
-          exclude: /(node_modules|bower_components)/,
+          exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env'],
+              presets: [['@babel/preset-env', { targets: 'defaults' }]],
             },
           },
         },
