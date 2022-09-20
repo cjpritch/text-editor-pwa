@@ -23,7 +23,9 @@ As a progressive web application, Jate is responsive, installable, and can be us
 - Workbox
 
 ## Demo
-[Click Here for Deployment]()
+![image](/client/src/images/screencapture-127-0-0-1-5500-Develop-client-dist-index-html-2022-09-20-13_19_03.png)
+
+[Click Here for Deployment](https://jate-pwa-cjp.herokuapp.com/)
 
 ## Created by [Carly Pritchard](https://github.com/cjpritch)
 
